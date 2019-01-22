@@ -7,6 +7,7 @@ require('dotenv').config();
 
 // mongodb config
 require('./config/db');
+require('./src/models/adminModel');
 
 // Initializing express app
 const app = express();

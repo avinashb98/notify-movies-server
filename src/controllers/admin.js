@@ -1,3 +1,4 @@
+const passport = require('passport');
 const Admin = require('../models/adminModel');
 
 const signUp = async (req, res) => {
@@ -26,6 +27,35 @@ const signUp = async (req, res) => {
   });
 };
 
+const login = async (req, res) => {
+  passport.authenticate('local', { session: false }, (err, admin, info) => {
+    if (err) {
+      res.status(403).json({
+        message: 'Unable to authenticate admin',
+        data: {}
+      });
+      return;
+    }
+
+    if (!admin) {
+      res.status(404).json({
+        message: 'Authentication failed',
+        data: {}
+      });
+      return;
+    }
+
+    const user = admin;
+    user.token = admin.generateJWT();
+
+    res.status(200).json({
+      message: 'Login Successful',
+      data: { user: admin.toAuthJSON() }
+    });
+  })(req, res);
+};
+
 module.exports = {
-  signUp
+  signUp,
+  login
 };

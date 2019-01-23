@@ -7,8 +7,9 @@ const signUp = async (req, res) => {
 
   let newAdmin;
   try {
-    newAdmin = await Admin.create(adminData);
+    newAdmin = new Admin(adminData);
     await newAdmin.setPassword(password);
+    await newAdmin.save();
   } catch (error) {
     res.status(500).json({
       message: 'Internal Server Error',

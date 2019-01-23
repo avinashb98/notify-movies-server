@@ -24,21 +24,21 @@ const AdminSchema = new Schema({
   }
 });
 
-AdminSchema.methods.setPassword = (password) => {
+AdminSchema.methods.setPassword = function (password) {
   this.salt = crypto.randomBytes(16).toString('hex');
   this.passwordHash = crypto.pbkdf2Sync(
     password, this.salt, 10000, 512, 'sha512'
   ).toString('hex');
 };
 
-AdminSchema.methods.validatePassword = (password) => {
+AdminSchema.methods.validatePassword = function (password) {
   const hash = crypto.pbkdf2Sync(
     password, this.salt, 10000, 512, 'sha512'
   ).toString('hex');
   return this.passwordHash === hash;
 };
 
-AdminSchema.methods.generateJWT = () => {
+AdminSchema.methods.generateJWT = function () {
   const today = new Date();
   const expirationDate = new Date(today);
   expirationDate.setDate(today.getDate() + 1);
@@ -50,10 +50,12 @@ AdminSchema.methods.generateJWT = () => {
   }, process.env.JWT_SECRET);
 };
 
-AdminSchema.methods.toAuthJSON = () => ({
-  _id: this._id,
-  email: this.email,
-  token: this.generateJWT(),
-});
+AdminSchema.methods.toAuthJSON = function () {
+  return {
+    _id: this._id,
+    email: this.email,
+    token: this.generateJWT(),
+  };
+};
 
 module.exports = mongoose.model('Admin', AdminSchema);

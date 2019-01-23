@@ -10,6 +10,9 @@ const Session = require('express-session');
 require('./config/db');
 require('./src/models/adminModel');
 
+// Routes
+const AdminRoutes = require('./src/routes/adminRoutes');
+
 // Passport configurations
 require('./config/passport');
 
@@ -60,5 +63,7 @@ app.get('/api/', (req, res) => {
     msg: 'Welcome to Movie Notifications API'
   });
 });
+
+app.use('/api/admin/', AdminRoutes);
 
 module.exports = app;

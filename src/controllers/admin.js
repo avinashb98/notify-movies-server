@@ -2,7 +2,7 @@ const passport = require('passport');
 const Admin = require('../models/adminModel');
 
 const signUp = async (req, res) => {
-  const { email, password, name } = req.body;
+  const { email, password, name } = req.parsed;
   const adminData = { email };
   if (name) adminData.name = name;
 

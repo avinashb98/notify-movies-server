@@ -1,13 +1,17 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const RateLimit = require('express-rate-limit');
-require('dotenv').config();
+const Session = require('express-session');
 
 // mongodb config
 require('./config/db');
 require('./src/models/adminModel');
+
+// Passport configurations
+require('./config/passport');
 
 // Initializing express app
 const app = express();
@@ -30,6 +34,14 @@ app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
 
 // Using CORS
 app.use(cors());
+
+app.use(Session({
+  secret: process.env.SESSION_SECRET,
+  cookie: { maxAge: 60000 },
+  resave: false,
+  saveUninitialized: false
+}));
+
 
 const limiter = new RateLimit({
   windowMs: 60 * 1000, // 1 minutes

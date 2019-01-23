@@ -5,15 +5,17 @@ const jwt = require('jsonwebtoken');
 const { Schema } = mongoose;
 
 const AdminSchema = new Schema({
-  firstName: {
-    type: String,
-    required: true
+  name: {
+    type: String
   },
   email: {
     type: String,
     required: true
   },
-  password: {
+  passwordHash: {
+    type: String
+  },
+  salt: {
     type: String
   },
   createdAt: {
@@ -24,7 +26,7 @@ const AdminSchema = new Schema({
 
 AdminSchema.methods.setPassword = (password) => {
   this.salt = crypto.randomBytes(16).toString('hex');
-  this.hash = crypto.pbkdf2Sync(
+  this.passwordHash = crypto.pbkdf2Sync(
     password, this.salt, 10000, 512, 'sha512'
   ).toString('hex');
 };
@@ -33,7 +35,7 @@ AdminSchema.methods.validatePassword = (password) => {
   const hash = crypto.pbkdf2Sync(
     password, this.salt, 10000, 512, 'sha512'
   ).toString('hex');
-  return this.hash === hash;
+  return this.passwordHash === hash;
 };
 
 AdminSchema.methods.generateJWT = () => {

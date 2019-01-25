@@ -8,15 +8,20 @@ const router = express.Router();
 router.post('/', validate.signUp, admin.signUp);
 router.post('/login', validate.login, admin.login);
 
+/**
+ * Protected Routes
+ */
+
 // Verify JWT Token
 router.use(verifyToken);
 
-// Protected Routes
-
-// Create User
+// Create a new User
 router.post('/createUser', admin.createUser);
 
 // Get list of users
 router.get('/users', admin.getUsers);
+
+// Create a Movie Record
+router.post('/movie', admin.createMovie);
 
 module.exports = router;

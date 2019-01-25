@@ -1,6 +1,7 @@
 const passport = require('passport');
 const Admin = require('../models/adminModel');
 const User = require('../models/user');
+const Movie = require('../models/movie');
 
 const signUp = async (req, res) => {
   const { email, password, name } = req.parsed;
@@ -110,9 +111,38 @@ const getUsers = async (req, res) => {
   });
 };
 
+const createMovie = async (req, res) => {
+  const { name, director, genre } = req.body;
+  let newMovie;
+  try {
+    newMovie = await Movie.create({
+      name, director, genre
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: 'Internal Server Error',
+      data: {}
+    });
+    return;
+  }
+
+  res.status(201).json({
+    message: 'New Movie Successfully created',
+    data: {
+      user: {
+        name: newMovie.name,
+        director: newMovie.director,
+        genre: newMovie.genre
+      }
+    }
+  });
+};
+
 module.exports = {
   signUp,
   login,
   createUser,
-  getUsers
+  getUsers,
+  createMovie
 };

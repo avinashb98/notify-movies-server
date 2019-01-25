@@ -8,8 +8,10 @@ const CitySchema = new Schema({
     required: true
   },
   theatres: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Theatre'
+    theatre: {
+      type: Schema.Types.ObjectId,
+      ref: 'Theatre'
+    }
   }],
   createdAt: {
     type: Date,

@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/avinashb98/notify-movies-server#readme",
   "dependencies": {
+    "amqplib": "^0.5.3",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "dotenv": "^6.2.0",

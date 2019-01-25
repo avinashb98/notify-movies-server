@@ -7,7 +7,6 @@ const router = express.Router();
 
 router.post('/', validate.signUp, admin.signUp);
 router.post('/login', validate.login, admin.login);
-router.get('/users', admin.getUsers);
 
 // Verify JWT Token
 router.use(verifyToken);
@@ -16,5 +15,8 @@ router.use(verifyToken);
 
 // Create User
 router.post('/createUser', admin.createUser);
+
+// Get list of users
+router.get('/users', admin.getUsers);
 
 module.exports = router;

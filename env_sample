@@ -3,3 +3,5 @@ PORT = <>
 DB_URI = <>
 SESSION_SECRET = <>
 JWT_SECRET = <>
+EMAIL_ID = <>
+EMAIL_PASSWORD = <>

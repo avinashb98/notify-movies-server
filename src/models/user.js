@@ -7,11 +7,17 @@ const UserSchema = new Schema({
   },
   email: {
     type: String,
-    require: true
+    require: true,
+    unique: true
   },
   city: {
     type: String,
     required: true
+  },
+  createdBy: {
+    type: Schema.Types.ObjectId,
+    ref: 'Admin',
+    default: null
   },
   createdAt: {
     type: Date,

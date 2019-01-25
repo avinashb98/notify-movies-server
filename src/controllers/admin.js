@@ -85,8 +85,34 @@ const createUser = async (req, res) => {
   });
 };
 
+const getUsers = async (req, res) => {
+  let users;
+  try {
+    users = await User.find({}, { name: 1, city: 1, email: 1 }).lean();
+  } catch (error) {
+    res.status(500).json({
+      message: 'Internal Server Error',
+      data: {}
+    });
+    return;
+  }
+
+  if (users.length === 0) {
+    res.status(404).json({
+      message: 'No users found',
+      data: {}
+    });
+  }
+
+  res.status(200).json({
+    message: 'List of Users',
+    data: { users }
+  });
+};
+
 module.exports = {
   signUp,
   login,
-  createUser
+  createUser,
+  getUsers
 };

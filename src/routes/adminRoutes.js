@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.post('/', validate.signUp, admin.signUp);
 router.post('/login', validate.login, admin.login);
+router.get('/users', admin.getUsers);
 
 // Verify JWT Token
 router.use(verifyToken);

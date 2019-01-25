@@ -59,9 +59,12 @@ const login = async (req, res) => {
 
 const createUser = async (req, res) => {
   const { name, city, email } = req.body;
+  const adminId = req.decoded.id;
   let newUser;
   try {
-    newUser = await User.create({ name, city, email });
+    newUser = await User.create({
+      name, city, email, createdBy: adminId
+    });
   } catch (error) {
     res.status(500).json({
       message: 'Internal Server Error',

@@ -1,5 +1,6 @@
 const passport = require('passport');
 const Admin = require('../models/adminModel');
+const User = require('../models/user');
 
 const signUp = async (req, res) => {
   const { email, password, name } = req.parsed;
@@ -16,6 +17,7 @@ const signUp = async (req, res) => {
       message: 'Internal Server Error',
       data: {}
     });
+    return;
   }
 
   res.status(201).json({
@@ -28,7 +30,7 @@ const signUp = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  passport.authenticate('local', { session: false }, (err, admin, info) => {
+  passport.authenticate('local', { session: false }, (err, admin) => {
     if (err) {
       res.status(403).json({
         message: 'Unable to authenticate admin',
@@ -55,7 +57,33 @@ const login = async (req, res) => {
   })(req, res);
 };
 
+const createUser = async (req, res) => {
+  const { name, city, email } = req.body;
+  let newUser;
+  try {
+    newUser = await User.create({ name, city, email });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Internal Server Error',
+      data: {}
+    });
+    return;
+  }
+
+  res.status(201).json({
+    message: 'New User Successfully created',
+    data: {
+      user: {
+        name: newUser.name,
+        email: newUser.email,
+        city: newUser.city
+      }
+    }
+  });
+};
+
 module.exports = {
   signUp,
-  login
+  login,
+  createUser
 };

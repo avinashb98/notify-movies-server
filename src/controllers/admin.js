@@ -2,6 +2,8 @@ const passport = require('passport');
 const Admin = require('../models/adminModel');
 const User = require('../models/user');
 const Movie = require('../models/movie');
+const Theatre = require('../models/theatre');
+const City = require('../models/city');
 
 const signUp = async (req, res) => {
   const { email, password, name } = req.parsed;
@@ -139,10 +141,69 @@ const createMovie = async (req, res) => {
   });
 };
 
+const createTheatre = async (req, res) => {
+  const { name, city, movie } = req.body;
+  let newTheatre;
+  try {
+    newTheatre = await Theatre.create({ name, city, movie });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: 'Internal Server Error',
+      data: {}
+    });
+    return;
+  }
+
+  res.status(201).json({
+    message: 'New Theatre Successfully Added',
+    data: {
+      user: {
+        name: newTheatre.name,
+        city: newTheatre.city,
+        movie: newTheatre.movie
+      }
+    }
+  });
+
+  City.findOneAndUpdate(
+    { name: city },
+    { $push: { theatres: { theatre: newTheatre._id } } }
+  )
+    .then(() => {
+      console.log(`Theatre ${newTheatre.name} successfully added to ${city}`);
+    })
+    .catch(console.log);
+};
+
+const addCity = async (req, res) => {
+  const { name } = req.body;
+  let newCity;
+  try {
+    newCity = await City.create({ name });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: 'Internal Server Error',
+      data: {}
+    });
+    return;
+  }
+
+  res.status(201).json({
+    message: 'New City Successfully Added',
+    data: {
+      user: { name: newCity.name }
+    }
+  });
+};
+
 module.exports = {
   signUp,
   login,
   createUser,
   getUsers,
-  createMovie
+  createMovie,
+  createTheatre,
+  addCity
 };

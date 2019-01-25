@@ -21,7 +21,13 @@ router.post('/createUser', admin.createUser);
 // Get list of users
 router.get('/users', admin.getUsers);
 
+// Add a City
+router.post('/city', admin.addCity);
+
 // Create a Movie Record
 router.post('/movie', admin.createMovie);
+
+// Create a Movie Record
+router.post('/theatre', admin.createTheatre);
 
 module.exports = router;

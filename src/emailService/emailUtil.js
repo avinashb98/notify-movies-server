@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
 
 const sendMail = async (emailData) => {
   const mailOptions = {
-    from: process.env.EMAIL_ID,
+    from: emailData.sender,
     to: emailData.recipient,
     subject: 'Movie Details',
     html: '<p>Inception is here</p>'

@@ -10,7 +10,6 @@ const pushEmailToQueue = (emailData) => {
       const q = 'mailingList';
       channel.assertQueue(q, { durable: false });
       channel.sendToQueue(q, Buffer.from(JSON.stringify(emailData)));
-      console.log('Sent');
     });
     setTimeout(() => { conn.close(); }, 1000);
   });

@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-const sendMail = async (emailData) => {
+const sendMail = (emailData) => {
   const mailOptions = {
     from: emailData.sender,
     to: emailData.recipient,
@@ -23,7 +23,7 @@ const sendMail = async (emailData) => {
     if (err) {
       console.log(err);
     } else {
-      console.log('Sent');
+      console.log('Sent to ', info.envelope.to);
     }
   });
 };

@@ -146,7 +146,7 @@ const createTheatre = async (req, res) => {
   const { name, city, movie } = req.body;
   let newTheatre;
   try {
-    newTheatre = await Theatre.create({ name, city, movie });
+    newTheatre = await Theatre.create({ name, city, currentMovie: movie });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -210,7 +210,38 @@ const mailSome = async (req, res) => {
     };
     emailService(emailData);
   });
-  res.send('Ok');
+  res.status(200).json({
+    message: 'Mail request received',
+    data: {}
+  });
+};
+
+const mailAll = async (req, res) => {
+  const { movie } = req.body;
+  let citiesWithMovie;
+  let userEmails;
+  try {
+    citiesWithMovie = await Theatre.aggregate([
+      { $match: { currentMovie: movie } },
+      { $group: { _id: '$city' } }
+    ]);
+    const queryArray = [];
+    citiesWithMovie.forEach((cityData) => {
+      queryArray.push({ city: cityData._id });
+    });
+    userEmails = await User.find({ $or: queryArray }, { email: 1 });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: 'Internal Server Error',
+      data: {}
+    });
+    return;
+  }
+  res.status(200).json({
+    message: 'Request Received',
+    data: {}
+  });
 };
 
 module.exports = {
@@ -221,5 +252,6 @@ module.exports = {
   createMovie,
   createTheatre,
   addCity,
-  mailSome
+  mailSome,
+  mailAll
 };

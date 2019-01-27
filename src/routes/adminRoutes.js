@@ -33,4 +33,7 @@ router.post('/theatre', admin.createTheatre);
 // Send Mail to a list of users emails
 router.post('/mail/some', admin.mailSome);
 
+// Send mail to users in city with specified movie
+router.post('/mail/all', admin.mailAll);
+
 module.exports = router;

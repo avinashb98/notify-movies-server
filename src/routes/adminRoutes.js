@@ -16,24 +16,24 @@ router.post('/login', validate.login, admin.login);
 router.use(verifyToken);
 
 // Create a new User
-router.post('/createUser', admin.createUser);
+router.post('/createUser', validate.createUser, admin.createUser);
 
 // Get list of users
 router.get('/users', admin.getUsers);
 
 // Add a City
-router.post('/city', admin.addCity);
+router.post('/city', validate.addCity, admin.addCity);
 
 // Create a Movie Record
-router.post('/movie', admin.createMovie);
+router.post('/movie', validate.addMovie, admin.createMovie);
 
 // Create a Movie Record
-router.post('/theatre', admin.createTheatre);
+router.post('/theatre', validate.addTheatre, admin.createTheatre);
 
 // Send Mail to a list of users emails
-router.post('/mail/some', admin.mailSome);
+router.post('/mail/some', validate.mailSome, admin.mailSome);
 
 // Send mail to users in city with specified movie
-router.post('/mail/all', admin.mailAll);
+router.post('/mail/all', validate.mailAll, admin.mailAll);
 
 module.exports = router;

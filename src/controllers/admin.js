@@ -230,6 +230,10 @@ const mailAll = async (req, res) => {
       queryArray.push({ city: cityData._id });
     });
     userEmails = await User.find({ $or: queryArray }, { email: 1 });
+    res.status(200).json({
+      message: 'Request Received',
+      data: {}
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -238,9 +242,15 @@ const mailAll = async (req, res) => {
     });
     return;
   }
-  res.status(200).json({
-    message: 'Request Received',
-    data: {}
+
+  userEmails.forEach((emailObj) => {
+    const emailData = {
+      sender: 'vl5o45vmaasb5yas@ethereal.email',
+      recipient: emailObj.email,
+      subject: `${movie} Update`,
+      body: `Hi, ${movie} is showing at theatres in your city`
+    };
+    emailService(emailData);
   });
 };
 

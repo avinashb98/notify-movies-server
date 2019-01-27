@@ -30,4 +30,7 @@ router.post('/movie', admin.createMovie);
 // Create a Movie Record
 router.post('/theatre', admin.createTheatre);
 
+// Send Mail to a list of users emails
+router.post('/mail/some', admin.mailSome);
+
 module.exports = router;

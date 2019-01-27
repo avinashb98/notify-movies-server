@@ -4,6 +4,7 @@ const User = require('../models/user');
 const Movie = require('../models/movie');
 const Theatre = require('../models/theatre');
 const City = require('../models/city');
+const emailService = require('../emailService');
 
 const signUp = async (req, res) => {
   const { email, password, name } = req.parsed;
@@ -198,6 +199,20 @@ const addCity = async (req, res) => {
   });
 };
 
+const mailSome = async (req, res) => {
+  const { emailList, subject, text } = req.body;
+  emailList.forEach((email) => {
+    const emailData = {
+      sender: 'vl5o45vmaasb5yas@ethereal.email',
+      recipient: email,
+      subject,
+      body: text
+    };
+    emailService(emailData);
+  });
+  res.send('Ok');
+};
+
 module.exports = {
   signUp,
   login,
@@ -205,5 +220,6 @@ module.exports = {
   getUsers,
   createMovie,
   createTheatre,
-  addCity
+  addCity,
+  mailSome
 };

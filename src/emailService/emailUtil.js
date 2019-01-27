@@ -1,10 +1,13 @@
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  pool: true,
+  host: 'smtp.ethereal.email',
+  port: 587,
+  secure: false,
   auth: {
-    user: process.env.EMAIL_ID,
-    pass: process.env.EMAIL_PASSWORD
+    user: 'vl5o45vmaasb5yas@ethereal.email',
+    pass: 's5GdbwjwEwJq7ZtYCK'
   }
 });
 
@@ -12,15 +15,15 @@ const sendMail = async (emailData) => {
   const mailOptions = {
     from: emailData.sender,
     to: emailData.recipient,
-    subject: 'Movie Details',
-    html: '<p>Inception is here</p>'
+    subject: emailData.subject,
+    html: emailData.body
   };
 
   transporter.sendMail(mailOptions, (err, info) => {
     if (err) {
       console.log(err);
     } else {
-      console.log(info);
+      console.log('Sent');
     }
   });
 };

@@ -5,9 +5,8 @@ amqp.connect(process.env.RABBIT_URL, (err, conn) => {
   conn.createChannel((error, channel) => {
     const q = 'mailingList';
     channel.assertQueue(q, { durable: false });
-    channel.consume(q, (jsonEmail) => {
-      const emailData = JSON.parse(jsonEmail);
-      sendEmail(emailData);
+    channel.consume(q, (email) => {
+      sendEmail(JSON.parse(email.content.toString()));
     }, { noAck: true });
   });
 });

@@ -1,12 +1,16 @@
 const amqp = require('amqplib/callback_api');
 
 const pushEmailToQueue = (emailData) => {
-  const emailJSON = JSON.stringify(emailData);
   amqp.connect(process.env.RABBIT_URL, (err, conn) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
     conn.createChannel((error, channel) => {
       const q = 'mailingList';
       channel.assertQueue(q, { durable: false });
-      channel.sendToQueue(q, emailJSON);
+      channel.sendToQueue(q, Buffer.from(JSON.stringify(emailData)));
+      console.log('Sent');
     });
     setTimeout(() => { conn.close(); }, 1000);
   });
